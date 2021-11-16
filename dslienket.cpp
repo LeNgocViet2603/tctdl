@@ -52,18 +52,49 @@ node *chen_list_sorted(node* &head,int value){
 	
 	return head;
 }
-void timkiem(node* Head,int so){
+int timkiem(node* Head,int so){
 	int dem=0;
 	for(node *p=Head;p!=NULL;p=p->next){
 		if(p->value==so){
 			dem++;
-			printf("\n co trong day so!\n");
+			return 1;
 		}
 	}
 	if(dem==0){
-		printf("khong co trong day so!\n");
+		return 0;
 	}
 }
+node *tim_vtri_xoa(node *D, int so)
+{
+	node *tg;
+	tg = D;
+	while(tg!=NULL)
+	{
+		if(tg->value == so)
+			return tg;
+		tg = tg->next;
+	}
+}
+node *xoa_ptu(node *D, int so)
+{
+	node *tg, *p;
+	p = tim_vtri_xoa(D,so);
+	if(p==D)
+	{
+		D = D->next;
+		p->next = NULL;
+	}
+	else
+	{
+		tg = D;
+		while(tg->next != p)
+			tg = tg->next;
+		tg->next=p->next;
+		p->next = NULL;
+	}
+	return D;
+}
+
 
 void sapxep_DS(node *Head){
 	int tmp;
@@ -92,11 +123,20 @@ main(){
 	xuat_DS(D);
 	printf("\n Nhap vao so can tim:\n");
 	scanf("%d",&so);
-	timkiem(D,so);
+	if(timkiem(D,so)){
+		printf("co trong day so\n");	
+	}
+	else{
+		printf("\n khong co trong day so");
+	}
 	sapxep_DS(D);
 	xuat_DS(D);
 	printf("Nhap so can chen vao: \n");
 	scanf("%d",&sochen);
 	chen_list_sorted(D,sochen);
+	xuat_DS(D);
+	printf("\n nhap phan tu can xoa!\n ");
+	scanf("%d",&so);
+	xoa_ptu(D,so);
 	xuat_DS(D);
 }
